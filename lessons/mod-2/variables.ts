@@ -3,6 +3,7 @@
 //	* any & unkown
 //	* union & intersection
 //	* type assertion & type guards
+//	* type alias
 
 // "Type safety" is one of the main motivations for using TypeScript.
 
@@ -166,6 +167,10 @@ let newManager: ManagmentEmployee = { id: 123, age: 45, stockPlan: true };
 //	* There are three sets of literal types available in TypeScript: string, number, and boolean.
 //	* narrowing down the possibilities: ( const x = "hello" ) = 1 possiblity ( let x = '' ) = infinit possibilities
 //	* we can "pre-define" values, so to say
+
+// COMMENT: "type" keyword expresses a "type alias"
+//	* A type alias is a definition of a type of data, for example, a union, primitive, intersection, tuple, or any other type.
+//	* alias are used to define "data" itself, while interfaces are to describe a "shape" (of an object)
 type testCases = 'pass' | 'fail' | 'incomplete' | 123 ;
 
 // declare variable of type "testCase"
