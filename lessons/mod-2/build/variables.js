@@ -1,4 +1,11 @@
 "use strict";
+// TYPES
+//	* primitive & enum & literal
+//	* any & unkown
+//	* union & intersection
+//	* type assertion & type guards
+// "Type safety" is one of the main motivations for using TypeScript.
+// ---------------------------------------------------------------------
 // dynamic run-time type system (JS) vs static compile-time type styem (TS)
 //	* static enable to accurately express the type relationships that are exprected
 //	* pre-validation while compiling
@@ -12,7 +19,6 @@ x = 1;
 console.log(y.toFixed(2));
 // type: any
 z = 'bcd';
-// COMMENT: "Type safety" is one of the main motivations for using TypeScript.
 // types:
 //	* any: any value without constraints
 //	* primitive: number, string, boolean, enum, void (indicates the absence of a value)
@@ -28,7 +34,7 @@ const num = 0;
 const bigNum = 100n;
 // strings
 const str = 'Hello World!';
-// enum
+// NOTE: enum
 //	* a symbolic name for a set of values
 //	* used to create sets of constants
 //	* makes code easier to read
@@ -58,11 +64,14 @@ unkownValue = 10;
 unkownValue = 'abc';
 unkownValue = true;
 // COMMENT: type assertion
-//	* A type assertion is like a type cast.
+//	* A type assertion is like "allowing" a type cast.
 //	* It tells the compiler "trust me, I know what I’m doing."
 //	* e.g. allows to force-apply a string method: toUpperCase().
 //	* best-practice: to make sure the type is the one we expect, we use "type guards"
 anyValue = 'hello';
+// on JSX use "as"
+anyValue.toUpperCase(); // :>> HELLO
+// another way of type assertion using <>
 anyValue.toUpperCase(); // :>> HELLO
 // COMMENT: type guards
 //	* conditional test, to learn the type of a variable
@@ -81,3 +90,36 @@ if (typeof anyValue === 'string') {
 else {
     console.log('Error - expected anyValue to be typeof String.');
 }
+// NOTE: Union types
+//	* a value that can be one of several types
+//	* compared to the "any type", "union type" restricts the assignment to a specific type
+//	* uses OR |
+let multiType;
+multiType = 20; // Ok
+multiType = true; // Ok
+// multiType = 'hello';	// not valid
+// union type + type guard
+function sum(x, y) {
+    if (typeof x === 'number' && typeof y === 'number') {
+        return x + y;
+    }
+    else if (typeof x === 'string' && typeof y === 'string') {
+        return Number(x) + Number(y);
+    }
+    else {
+        throw new Error('Invalid Input');
+    }
+}
+console.log(sum(2, 5)); // 7
+console.log(sum('2', '5')); // 7
+console.log(sum('2', 5)); // invalid innput
+// create new variable based on intersection type
+let newManager = { id: 123, age: 45, stockPlan: true };
+// declare variable of type "testCase"
+let result;
+// initialize variable
+result = 'pass'; // Ok
+result = 'fail'; // Ok
+result = 123; // Ok
+// result = 'try';	// invalid
+// result = 456;	// invalid

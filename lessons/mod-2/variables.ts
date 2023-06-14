@@ -1,3 +1,13 @@
+// TYPES
+//	* primitive & enum & literal
+//	* any & unkown
+//	* union & intersection
+//	* type assertion & type guards
+
+// "Type safety" is one of the main motivations for using TypeScript.
+
+// ---------------------------------------------------------------------
+
 // dynamic run-time type system (JS) vs static compile-time type styem (TS)
 //	* static enable to accurately express the type relationships that are exprected
 //	* pre-validation while compiling
@@ -18,7 +28,6 @@ z = 'bcd'
 
 
 
-// COMMENT: "Type safety" is one of the main motivations for using TypeScript.
 // types:
 //	* any: any value without constraints
 //	* primitive: number, string, boolean, enum, void (indicates the absence of a value)
@@ -36,7 +45,9 @@ const bigNum: bigint = 100n;
 // strings
 const str: string = 'Hello World!';
 
-// enum
+
+
+// NOTE: enum
 //	* a symbolic name for a set of values
 //	* used to create sets of constants
 //	* makes code easier to read
@@ -56,11 +67,13 @@ console.log( employeeStatus ); // :>> 2
 console.log( ContractStatus[employeeStatus]); // :>> Temp
 
 
+
 // NOTE: type any: bypass any compile-time checks = flexible at the cost of losing type safety
 let anyValue: any;
 anyValue = 10;		// Ok
 anyValue = 'abc';	// Ok
 anyValue = true;		// Ok
+
 // NOTE: type unkown: unable to interact with a variable of type unkown
 let unkownValue: unknown;
 unkownValue = 10;
@@ -68,13 +81,17 @@ unkownValue = 'abc';
 unkownValue = true;
 
 
+
 // COMMENT: type assertion
-//	* A type assertion is like a type cast.
+//	* A type assertion is like "allowing" a type cast.
 //	* It tells the compiler "trust me, I know what I’m doing."
 //	* e.g. allows to force-apply a string method: toUpperCase().
 //	* best-practice: to make sure the type is the one we expect, we use "type guards"
 anyValue = 'hello';
+// on JSX use "as"
 (anyValue as string).toUpperCase(); // :>> HELLO
+// another way of type assertion using <>
+(<string> anyValue).toUpperCase(); // :>> HELLO
 
 
 // COMMENT: type guards
@@ -94,3 +111,69 @@ if ( typeof anyValue === 'string' ) {
 else {
 	console.log( 'Error - expected anyValue to be typeof String.');
 }
+
+
+
+// NOTE: Union types
+//	* a value that can be one of several types
+//	* compared to the "any type", "union type" restricts the assignment to a specific type
+//	* uses OR |
+let multiType: number | boolean;
+multiType = 20;			// Ok
+multiType = true;		// Ok
+// multiType = 'hello';	// not valid
+
+// union type + type guard
+function sum( x: number | string, y: number | string ) {
+	if ( typeof x === 'number' && typeof y === 'number' ) {
+		return x + y;
+	}
+	else if ( typeof x === 'string' && typeof y === 'string' ) {
+		return Number(x) + Number(y);
+	}
+	else {
+		throw new Error('Invalid Input');
+	}
+}
+console.log( sum(2, 5) ); // 7
+console.log( sum('2', '5') ); // 7
+console.log( sum('2', 5) ); // invalid innput
+
+
+
+// NOTE: intersection types
+//	* closely related to "union types"
+//	* "intersection types" combine two or more types, to create a new type
+//	* often used with interfaces
+//	* uses AND &&
+interface Employee {
+	id: number;
+	age: number;
+}
+interface Manager {
+	stockPlan: boolean;
+}
+
+// define new intersection type
+type ManagmentEmployee = Employee & Manager;
+
+// create new variable based on intersection type
+let newManager: ManagmentEmployee = { id: 123, age: 45, stockPlan: true };
+
+
+
+// NOTE: literal types
+//	* There are three sets of literal types available in TypeScript: string, number, and boolean.
+//	* narrowing down the possibilities: ( const x = "hello" ) = 1 possiblity ( let x = '' ) = infinit possibilities
+//	* we can "pre-define" values, so to say
+type testCases = 'pass' | 'fail' | 'incomplete' | 123 ;
+
+// declare variable of type "testCase"
+let result: testCases;
+// initialize variable
+result = 'pass';	// Ok
+result = 'fail';	// Ok
+result = 123;		// Ok
+// result = 'try';	// invalid
+// result = 456;	// invalid
+
