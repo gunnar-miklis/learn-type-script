@@ -4,8 +4,8 @@
 //	* TS offers the benefit of "type checking" the values that you pass to the function and what is returned.
 
 //	* type checking of parameters & return values
-//	* optional, default, rest parameters
-//	* function types
+//	* required, optional, default, rest parameters
+//	* function types using alias or interface
 
 
 
