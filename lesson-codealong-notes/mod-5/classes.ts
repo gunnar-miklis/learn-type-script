@@ -30,22 +30,22 @@ class Car {
 	}
 
 	// accessors
-	get manufacturer() { 
+	get manufacturer(): string { 
 		return this._manufacturer;
 	}
-	set manufacturer( manufacturer ) {
+	set manufacturer( manufacturer: string ) {
 		this._manufacturer = manufacturer
 	}
-	get color() { 
+	get color(): string { 
 		return 'The color of the car is ' + this._color;
 	}
-	set color( color ) {
+	set color( color: string ) {
 		this._color = color
 	}
-	get doors() { 
+	get doors(): number { 
 		return this._doors;
 	}
-	set doors( doors ) {
+	set doors( doors: number ) {
 		if ( (doors % 2 ) === 1 ) {
 			this._doors = doors;
 		} else {
@@ -102,9 +102,9 @@ console.log( myCar2.turn('right') ); 				// :>> Octane is turning right.
 
 class Motorbike {
 	// Properties
-	private _manufacturer: string;
+	private _manufacturer: string;				// COMMENT: only available inside this class
 	private _color: string;
-	private static numberOfBikes: number = 0;
+	private static numberOfBikes: number = 0;	// COMMENT: static: shared by all instances
 
 	// constructor
 	constructor( manufacturer: string, color: string ) {
@@ -114,16 +114,16 @@ class Motorbike {
 	}
 
 	// accessors
-	get manufacturer() { 
+	get manufacturer(): string { 
 		return this._manufacturer;
 	}
-	set manufacturer( manufacturer ) {
+	set manufacturer( manufacturer: string ) {
 		this._manufacturer = manufacturer
 	}
-	get color() { 
+	get color(): string { 
 		return 'The color of the motorbike is ' + this._color;
 	}
-	set color( color ) {
+	set color( color: string ) {
 		this._color = color
 	}
 
@@ -137,9 +137,13 @@ class Motorbike {
 	turn( direction: 'left' |'right' ): string {
 		return `${this.worker()} is turning ${direction}.`
 	}
-	private worker(): string {
+
+	// COMMENT: protected: available inside extended classes as well
+	protected worker(): string {
 		return this._manufacturer;
 	}
+
+	// COMMENT: static: shared by all instances
 	public static getNumberOfBikes(): number {
 		return Motorbike.numberOfBikes;
 	}
@@ -159,4 +163,93 @@ console.log( Motorbike.getNumberOfBikes() ); // :>> 3
 
 
 // NOTE: inheritance: extend a class
-// ...
+// create a "hierarchy": inherent a sub-class to the base-class/parent-class
+// methods from the base-class can be overwritten: same name, but different functionality
+class ElectricMotorbike extends Motorbike {
+	// properties
+	private _range: number;
+
+	// constructor
+	constructor( manufacturer: string, color: string, range: number ) {
+		super( manufacturer, color );
+		this._range = range;
+	}
+
+	// accessor
+	get range(): number {
+		return this._range;
+	}
+	set range( range: number ) {
+		this._range = range;
+	}
+
+	// methods
+	charge(): string {
+		return `${this.worker()} is charging.`
+	}
+	// COMMENT: overwrite brake()
+	brake(): string {
+		return `${this.worker()} is braking with the regenerative braking system.`
+	}
+}
+
+const myEbike = new ElectricMotorbike( 'Zero Motorcycles', 'black', 200 );
+console.log( myEbike.range ); // :>> 200
+console.log( myEbike.charge() ); // :>> '... is charging'
+console.log( myMotorbike1.brake() ); // :>> ...is braking with standard...
+console.log( myEbike.brake() ); // :>> ...is braking with regenerative...
+
+console.log( Motorbike.getNumberOfBikes() ); // :>> 4
+
+
+
+// NOTE: interface to ensure class shape
+//	* "code contract": describes the required properties of an object and their types.
+//	* an interace for a class can only describe the "public-facing side", not it's private members.
+interface Vehicle {
+	manufacturer: string;
+	color: string;
+	accelerate( speed: number ): string;
+	turn( direction: 'left' |'right' ): string;
+}
+
+class Boat implements Vehicle {
+	// properties
+	private _manufacturer: string;
+	private _color: string;
+
+	// constructor
+	constructor( manufacturer: string, color: string ) {
+		this._manufacturer = manufacturer;
+		this._color = color;
+	}
+
+	// accessor
+	get manufacturer(): string {
+		return this._manufacturer;
+	}
+	set manufacturer( manufacturer: string ) {
+		this._manufacturer = manufacturer;
+	}
+	get color(): string {
+		return this._color;
+	}
+	set color( color: string ) {
+		this._color = color;
+	}
+
+	// methods
+	accelerate(speed: number): string {
+		return `${this.worker()} accelerates with ${speed} MPH.`
+	}
+	turn(direction: "left" | "right"): string {
+		return `${this.worker()} turns ${direction}.`
+	}
+	protected worker(): string {
+		return this._manufacturer;
+	}
+}
+const myBoat = new Boat( 'House Boat', 'white' );
+console.log( myBoat.accelerate(1) );
+console.log( myBoat.turn('left') );
+console.log( myBoat.color );
