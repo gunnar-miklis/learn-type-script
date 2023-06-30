@@ -51,9 +51,10 @@ console.log(
 // type guards with generics
 // Type guards can be used to check the type of a value before doing something with it.
 function displayMessage3<T extends ValidTypes, U>( id: T, message: U): ValidTypes {
-	const ValueType = typeof id;
+	const ValueType: ValidTypes = typeof id;
 	let messageId: ValidTypes = 'msg-';
 	
+	// type guard
 	if ( ValueType === 'string' ) {
 		messageId += id;
 	} else if ( ValueType === 'number' ) {
