@@ -4,6 +4,7 @@
 //	* keywords: export / import
 //	* move from global scope to module scope
 //	* "modules" are native part of JavaScript since ES2015
+//	* "it's not recommended to combine namespaces and modules in the same project."
 
 // EXPORT
 //	* export function myFunc() {}
