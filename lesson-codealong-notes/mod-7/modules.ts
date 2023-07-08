@@ -3,6 +3,7 @@
 //	* export any declaration (variable, function, class, alias, interface)
 //	* keywords: export / import
 //	* move from global scope to module scope
+//	* "modules" are native part of JavaScript since ES2015
 
 // EXPORT
 //	* export function myFunc() {}
