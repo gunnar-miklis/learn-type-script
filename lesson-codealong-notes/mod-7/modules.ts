@@ -1,4 +1,4 @@
-// Organize code using "modules"
+// Organize code using "modules" ( external modules )
 //	* group related code together
 //	* export any declaration (variable, function, class, alias, interface)
 //	* keywords: export / import
